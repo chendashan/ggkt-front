@@ -29,5 +29,32 @@ export default {
             method: 'post',
             data: teacher
           })
+    },
+
+    //根据id查询讲师
+    getTeacherById(id) {
+        return request({
+            url: `${api_name}/getById/${id}`,
+            method: 'get'
+          })
+    },
+
+    //修改讲师
+    updateTeacher(teacher) {
+        return request({
+            url: `${api_name}/updateTeacher`,
+            method: 'post',
+            data: teacher
+          })
+    },
+
+    batchRemove(idList) {
+        return request({
+            url: `${api_name}/deleteBatch`,
+            method: 'delete',
+            data: idList
+        })
     }
+
+
 }

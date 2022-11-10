@@ -34,6 +34,15 @@
         </el-form>
         </el-card>
 
+
+        <!-- 工具按钮 -->
+        <el-card class="operate-container" shadow="never">
+            <i class="el-icon-tickets" style="margin-top: 5px"></i>
+            <span style="margin-top: 5px">数据列表</span>
+            <el-button class="btn-add" @click="add()" style="margin-left: 10px;">添加</el-button>
+            <el-button class="btn-add" @click="batchRemove()" >批量删除</el-button>
+        </el-card>
+
         <!-- 表格 -->
         <el-table
             :data="list"
@@ -93,7 +102,8 @@
                 total: 0, // 总记录数
                 page: 1, // 页码
                 limit: 10, // 每页记录数
-                searchObj: {} // 查询条件
+                searchObj: {}, // 查询条件
+                multipleSelection: []// 批量删除选中的记录列表
 
             }
         },
@@ -101,6 +111,16 @@
             this.fetchData()
         },
         methods:{ //具体方法
+
+            //复选框事件
+            handleSelectionChange(selection) {
+                this.multipleSelection = selection
+                console.log(this.multipleSelection)
+            },
+            //跳转到添加表单页面
+            add() {
+                this.$router.push({path:'/vod/teacher/create'})
+            },
             fetchData() {
                 teacherApi.pageList(this.page, this.limit, this.searchObj)
                   .then(response => {
@@ -142,6 +162,40 @@
                       })
                     
                 })
+            },
+
+            //批量删除
+            batchRemove() {
+                if (this.multipleSelection.length === 0) {
+                    this.$message.warning('当前没有选择任何数据')
+                    return
+                }
+
+                this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    var idList = []
+                    for(var i = 0; i < this.multipleSelection.length; i++) {
+                        var obj = this.multipleSelection[i]
+                        var id = obj.id
+                        idList.push(id)
+                    }
+
+                    //调用接口删除
+                    teacherApi.batchRemove(idList)
+                      .then(response => {
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                        //刷新
+                        this.fetchData()
+                      })
+                    
+                })
+
             }
         }
     }

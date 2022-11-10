@@ -52,16 +52,46 @@ export default {
         }
     },
     created() {
-
+        if (this.$route.params.id) {
+            const id = this.$route.params.id
+            this.fetchDataById(id)
+        }
     },
     methods: {
+        fetchDataById(id) {
+            teacherApi.getTeacherById(id)
+              .then(response => {
+                this.teacher = response.data
+              })
+        },
         saveOrUpdate() {
+            if (this.teacher.id) {
+                this.update()
+            } else {
+                this.save()
+            }
+        },
+        //添加
+        save() {
             teacherApi.saveTeacher(this.teacher)
               .then(response => {
                 //提示
                 this.$message({
                     type: 'success',
                     message: '添加成功!'
+                });
+                //跳转列表页面
+                this.$router.push({path:'/vod/teacher/list'})
+              })
+        },
+        //修改
+        update() {
+            teacherApi.updateTeacher(this.teacher)
+              .then(response => {
+                //提示
+                this.$message({
+                    type: 'success',
+                    message: '修改成功!'
                 });
                 //跳转列表页面
                 this.$router.push({path:'/vod/teacher/list'})
