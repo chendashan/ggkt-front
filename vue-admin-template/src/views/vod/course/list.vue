@@ -143,7 +143,7 @@
         @current-change="changeCurrentPage"
       />
     </div>
-  </template>
+</template>
   
   <script>
   import courseApi from '@/api/vod/course'

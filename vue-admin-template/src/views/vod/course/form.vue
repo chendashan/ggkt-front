@@ -13,14 +13,14 @@
       <!-- 发布课程 -->
       <Publish v-if="active === 2 || active === 3" />
     </div>
-  </template>
+</template>
   
-  <script>
+<script>
   // 引入子组件
   import Info from '@/views/vod/course/components/Info'
   import Chapter from '@/views/vod/course/components/Chapter'
   import Publish from '@/views/vod/course/components/Publish'
-  
+
   export default {
     components: { Info, Chapter, Publish }, // 注册子组件
     data() {
@@ -42,4 +42,4 @@
       }
     }
   }
-  </script>
+</script>
